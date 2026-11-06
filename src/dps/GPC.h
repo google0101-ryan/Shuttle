@@ -19,6 +19,7 @@ public:
     void Liftoff();
 
     bool OpsCommand(int mm);
+    bool GoToSpec(int spec);
 
     Page* GetCurPage();
     Time* GetTime() { return &time; }

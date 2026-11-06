@@ -186,7 +186,7 @@ void MEDWindow::DrawTextUnderline(double x, double y, const char *text, ...)
 
 void MEDWindow::DrawLine(double x1, double y1, double x2, double y2)
 {
-    SDL_SetRenderDrawColor(renderer, COLOR_DPS_NORMAL, SDL_ALPHA_OPAQUE);
+    // SDL_SetRenderDrawColor(renderer, COLOR_DPS_NORMAL, SDL_ALPHA_OPAQUE);
     SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
 }
 

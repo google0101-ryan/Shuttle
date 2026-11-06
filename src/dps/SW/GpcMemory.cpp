@@ -129,6 +129,7 @@ void GpcMemory::Draw(MEDWindow *surf)
     surf->DrawText(39, 23, "SM  54 _");
 
     // lines
+    surf->SetDrawColor(COLOR_DPS_NORMAL, 255);
     // line dividing the bus numbers from item numbers
     // STRING 1 |  7 1
     surf->DrawLine(105, 84, 105, 298);

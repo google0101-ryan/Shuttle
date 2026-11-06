@@ -24,6 +24,9 @@ void DPS::Init()
 
     // COMPOOL setup
     pool.Write(DISPLAYTITLE_ID, 1);
+
+    for (int i = 0; i < 4; i++)
+        blankFrames[i] = 0;
 }
 
 void DPS::Tick()
@@ -52,7 +55,24 @@ void DPS::Liftoff()
 
 void DPS::Draw(int idx, MEDWindow *surf)
 {
+    if (blankFrames[idx] > 0)
+    {
+        blankFrames[idx]--;
+        return;
+    }
+
     idp[idx].Draw(surf);
+}
+
+void DPS::Blank(int frames)
+{
+    for (int i = 0; i < 4; i++)
+        blankFrames[i] = frames;
+}
+
+void DPS::BlankIDP(int idp, int frames)
+{
+    blankFrames[idp] = frames + (rand() % 10);
 }
 
 void DPS::SendKey(int kbIdx, int key)
@@ -94,6 +114,9 @@ void DPS::UpdateIDPs()
 
 void DPS::SetBFSEnable(bool bfs)
 {
+    if (bfs != bfsEnabled)
+        BlankIDP(2, 10);
+
     bfsEnabled = bfs;
 
     auto mc = gpcs[0].GetMC();

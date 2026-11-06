@@ -80,6 +80,14 @@ void Keyboard::Init(int id)
     pro->Init(renderer, 180, 420, "res/pro.png");
     pro->SetOnClicked(SendKey<KEY_PRO>);
 
+    spec = new Button();
+    spec->Init(renderer, 0, 360, "res/spec.png");
+    spec->SetOnClicked(SendKey<KEY_SPEC>);
+
+    resume = new Button();
+    resume->Init(renderer, 0, 420, "res/resume.png");
+    resume->SetOnClicked(SendKey<KEY_RESUME>);
+
     inputIdx = 0;
 }
 
@@ -99,6 +107,8 @@ void Keyboard::Draw()
     msgReset->Draw(renderer);
     ops->Draw(renderer);
     pro->Draw(renderer);
+    spec->Draw(renderer);
+    resume->Draw(renderer);
 
     SDL_RenderPresent(renderer);
 }
@@ -120,6 +130,8 @@ void Keyboard::MouseEvent(SDL_Event &e)
     msgReset->OnMouseDown(e, (void*)this);
     ops->OnMouseDown(e, (void*)this);
     pro->OnMouseDown(e, (void*)this);
+    spec->OnMouseDown(e, (void*)this);
+    resume->OnMouseDown(e, (void*)this);
 }
 
 void Keyboard::AddInput(int button)

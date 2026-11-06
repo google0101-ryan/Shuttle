@@ -61,6 +61,7 @@ void BFSMemory::Draw(MEDWindow *surf)
     surf->DrawTextUnderline(23, 23, "  ");
     surf->DrawTextUnderline(26, 23, "   ");
 
+    surf->SetDrawColor(COLOR_DPS_NORMAL, 255);
     surf->DrawLine(10, 215, 510, 215);
     surf->DrawLine(240, 215, 240, 308);
 }

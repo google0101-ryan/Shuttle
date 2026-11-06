@@ -61,6 +61,8 @@ private:
     Button* msgReset;
     Button* ops;
     Button* pro;
+    Button* spec;
+    Button* resume;
 
     int inputBuf[1024];
     int inputIdx;

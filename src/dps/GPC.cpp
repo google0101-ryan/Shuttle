@@ -54,6 +54,8 @@ bool GPC::OpsCommand(int mm)
     // Tell the DPS system that the NBAT has changed
     DPS::Instance()->UpdateIDPs();
 
+    DPS::Instance()->Blank(10);
+
     if (mm == curMM->GetNum())
         return true;
 
@@ -67,6 +69,42 @@ bool GPC::OpsCommand(int mm)
         return SwitchBFSMM(mm);
     else
         return SwitchPASSMM(mm);
+}
+
+bool GPC::GoToSpec(int spec)
+{
+    // This is for CRT blanking
+    auto mc = GetMC();
+    bool crts[4] = {false};
+    for (int i = 0; i < 4; i++)
+        if (mc.nbat.crt[i] == id)
+            crts[i] = true;
+
+    if (spec == -1)
+    {
+        curSpec = nullptr;
+    }
+
+    if (spec == 0)
+    {
+        if (curMM->GetNum() == 0)
+            return false;
+        curSpec = &ops0;
+    }
+
+    switch (spec)
+    {
+    case -1:
+    case 0:
+        break;
+    default:
+        return false;
+    }
+    
+    for (int i = 0; i < 4; i++)
+        if (crts[i])
+            DPS::Instance()->BlankIDP(i, 10);
+    return true;
 }
 
 Page *GPC::GetCurPage()

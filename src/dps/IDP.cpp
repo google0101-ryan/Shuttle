@@ -41,6 +41,12 @@ const char* ScratchpadString(int* buf, int len)
         case KEY_OPS:
             strcat(dst, "OPS ");
             break;
+        case KEY_SPEC:
+            strcat(dst, "SPEC ");
+            break;
+        case KEY_RESUME:
+            strcat(dst, "RESUME ");
+            break;
         }
     }
 
@@ -119,24 +125,24 @@ void IDP::Tick()
     if (!lineComplete || processed)
         return;
 
-    // Line parsing
-    if (inputLine[0] != KEY_OPS && inputLine[0] != KEY_ITEM && inputLine[0] != KEY_SPEC)
-    {
-        inputError = true;
-        return;
-    }
-
     switch (inputLine[0])
     {
     case KEY_OPS:
         ParseOpsCommand();
         break;
     case KEY_SPEC:
-        printf("TODO: SPEC KEY SUPPORT\n");
-        inputLineLen = 0;
+        ParseSpecCommand();
         break;
     case KEY_ITEM:
         ParseItemCommand();
+        break;
+    case KEY_RESUME:
+        processed = true;
+        gpc->GoToSpec(-1);
+        break;
+    default:
+        inputError = true;
+        processed = true;
         break;
     }
 }
@@ -247,6 +253,7 @@ void IDP::SendKey(int key)
     case KEY_MSG_RESET:
     case KEY_SYS_SUMM:
     case KEY_FAULT_SUMM:
+    case KEY_RESUME:
         lineComplete = true;
         break;
     }
@@ -256,7 +263,7 @@ void IDP::SendKey(int key)
 
 void IDP::ParseItemCommand()
 {
-    lineComplete = false;
+    // lineComplete = false;
     processed = true;
     // inputLineLen = 0;
 
@@ -323,7 +330,7 @@ void IDP::ParseItemCommand()
 
 void IDP::ParseOpsCommand()
 {
-    lineComplete = false;
+    // lineComplete = false;
     // inputLineLen = 0;
     processed = true;
 
@@ -369,6 +376,37 @@ void IDP::ParseOpsCommand()
         if (DPS::Instance()->GetGPC(4)->GetParent())
             DPS::Instance()->GetGPC(4)->GetParent()->inputError = true;
     }
+}
+
+void IDP::ParseSpecCommand()
+{
+    //lineComplete = false;
+    // inputLineLen = 0;
+    processed = true;
+
+    if (!IsDigit(inputLine[1]))
+    {
+        inputError = true;
+        return;
+    }
+
+    int* ptr = &inputLine[1];
+    int spec = 0;
+    while (IsDigit(*ptr))
+    {
+        spec *= 10;
+        spec += *ptr;
+        ptr++;
+    }
+
+    if (*ptr != KEY_PRO)
+    {
+        inputError = true;
+        return;
+    }
+
+    if (!gpc->GoToSpec(spec))
+        inputError = true;
 }
 
 int IDP::GetFlashingEntry()

@@ -28,6 +28,7 @@ public:
 private:
     void ParseItemCommand();
     void ParseOpsCommand();
+    void ParseSpecCommand();
 
     int GetFlashingEntry();
 private:

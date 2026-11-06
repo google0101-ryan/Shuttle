@@ -7,6 +7,10 @@
 // Compool variables
 #define K_CMD 0x1948
 #define DISPLAYTITLE_ID 0x3910
+#define PC_LT_50 0x8332
+
+#define ORB_ALT 0
+#define ORB_VR 1
 
 // Contains global variables available for the DPS to read/write, like K_CMD
 class Compool

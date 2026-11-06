@@ -67,8 +67,5 @@ int main()
 
         for (int i = 0; i < NUM_CRTS; i++)
             windows[i].Present();
-        
-        if (DPS::Instance()->GetGPC(0)->GetTime()->GetTimeS() > 60)
-            DPS::Instance()->Liftoff();
     }
 }

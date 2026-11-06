@@ -19,6 +19,8 @@ public:
     void Liftoff();
 
     void Draw(int idx, MEDWindow* surf);
+    void Blank(int frames);
+    void BlankIDP(int idp, int frames);
     // 0 - Left keyboard, 1 - right keyboard, 2 - rear keyboard
     void SendKey(int kbIdx, int key);
 
@@ -37,6 +39,8 @@ private:
 
     bool bfsEnabled;
     bool isInLiftoff;
+    // Whenever we transition to a new major mode, simulate loading time by blanking for a few frames
+    int blankFrames[4];
 
     static DPS* instance;
 };

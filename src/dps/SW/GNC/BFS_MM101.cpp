@@ -16,6 +16,7 @@ void BFS_LaunchTrajectory::Draw(MEDWindow *surf)
     surf->DrawText(24, 18, "50");
     surf->DrawText(31, 15, "40");
 
+    surf->SetDrawColor(COLOR_DPS_NORMAL, 255);
     surf->DrawLine(78, 324, 116, 317);
     surf->DrawLine(116, 317, 159, 302);
     surf->DrawLine(159, 302, 217, 257);

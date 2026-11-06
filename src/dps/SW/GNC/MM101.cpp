@@ -35,6 +35,7 @@ void AscentTrajectory::Draw(MEDWindow *surf)
     surf->DrawText(24, 18, "50");
     surf->DrawText(31, 15, "40");
 
+    surf->SetDrawColor(COLOR_DPS_NORMAL, 255);
     surf->DrawLine(78, 324, 116, 317);
     surf->DrawLine(116, 317, 159, 302);
     surf->DrawLine(159, 302, 217, 257);
@@ -48,8 +49,23 @@ void AscentTrajectory::Draw(MEDWindow *surf)
 	surf->DrawLine( 196, 267, 196, 278 );
 	surf->DrawLine( 116, 313, 116, 324 );
 
-    // surf->YellowFont();
-    // surf->DrawTextFlash(23, 10, "Pc < 50");
+    if (GetNum() == 102)
+    {
+        float altitude = DPS::Instance()->GetCompool()->Read<float>(ORB_ALT);
+        float vr = DPS::Instance()->GetCompool()->Read<float>(ORB_VR);
+
+        short stY = (short)(324 - (altitude * 0.00164198));
+        short stX = (short)(78 + (vr * 0.0930909));
+
+        surf->SetDrawColor(COLOR_DPS_YELLOW, 255);
+        surf->DrawLine(stX, stY - 6, stX - 6, stY + 6);
+        surf->DrawLine(stX - 6, stY + 6, stX + 6, stY + 6);
+        surf->DrawLine(stX + 6, stY + 6, stX, stY - 6);
+    }
+
+    surf->YellowFont();
+    if (DPS::Instance()->GetCompool()->Read<bool>(PC_LT_50))
+        surf->DrawTextFlash(23, 10, "Pc < 50");
     // surf->DrawTextFlash(20, 4, "SRB SEP INH");
     // surf->DrawTextFlash(21, 6, "ET SEP INH");
     // surf->DrawTextFlash(21, 8, "ET SEP MAN");
