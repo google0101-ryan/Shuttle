@@ -38,7 +38,7 @@ void DPS::Tick()
 {
     for (int i = 0; i < 4; i++)
         idp[i].Tick();
-
+#if 0
     if (!isInLiftoff && gpcs[0].GetTime()->GetTimeS() > 60)
     {
         Liftoff();
@@ -55,6 +55,7 @@ void DPS::Tick()
             break;
         }
     }
+#endif
 }
 
 void DPS::Liftoff()

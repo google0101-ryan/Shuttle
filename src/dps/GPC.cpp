@@ -19,6 +19,7 @@ void GPC::Init(int id)
     else
         curMM = &ops0;
     curSpec = nullptr;
+    curDisp = nullptr;
     curMM->SetParent(this);
 
     time.Init();
@@ -85,7 +86,10 @@ bool GPC::GoToSpec(int spec)
 
     if (spec == -1)
     {
-        curSpec = nullptr;
+        if (curDisp)
+            curDisp = nullptr;
+        else
+            curSpec = nullptr;
     }
 
     if (spec == 0)
@@ -103,9 +107,17 @@ bool GPC::GoToSpec(int spec)
     case -1:
     case 0:
         break;
+    case 18:
+        curDisp = &gncSysSumm1;
+        break;
     default:
         return false;
     }
+
+    if (curDisp)
+        curDisp->SetParent(this);
+    if (curSpec)
+        curSpec->SetParent(this);
     
     for (int i = 0; i < 4; i++)
         if (crts[i])
@@ -115,6 +127,8 @@ bool GPC::GoToSpec(int spec)
 
 Page *GPC::GetCurPage()
 {
+    if (curDisp)
+        return curDisp;
     if (curSpec)
         return curSpec;
     return curMM;

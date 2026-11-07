@@ -4,6 +4,7 @@
 #include <dps/SW/BfsMemory.h>
 #include <dps/SW/GNC/MM101.h>
 #include <dps/SW/GNC/BFS_MM101.h>
+#include <dps/SW/GNC/GNCSpec18.h>
 #include <dps/Timer.h>
 
 class IDP;
@@ -26,6 +27,7 @@ public:
     Time* GetTime() { return &time; }
     Time* GetInternalTime() { return &internalTime; }
 
+    Page* GetDisp() { return curDisp; }
     Page* GetSpec() { return curSpec;}
     Page* GetMM() { return curMM; }
 
@@ -42,10 +44,14 @@ private:
 private:
     Page* curMM;
     Page* curSpec;
+    Page* curDisp;
     IDP* idp;
 
     GpcMemory ops0;
     AscentTrajectory mm101;
+
+    // Spec pages, GNC, PASS
+    GNCSysSumm1 gncSysSumm1;
 
     BFSMemory bfsMem;
     BFS_LaunchTrajectory bfsMM101;

@@ -13,6 +13,7 @@ void BFSMemory::Tick()
     {
         double elapsed = parent->GetTime()->GetTimeMS() - xferStartTime;
 
+        printf("%f\n", elapsed);
         if (elapsed > 5000)
         {
             xferStartTime = -1;

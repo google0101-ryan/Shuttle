@@ -13,12 +13,24 @@ int main(int argc, char** argv)
         windows[i].Init(nullptr, 522);
     }
 
+    SDL_Rect disp;
+    SDL_GetDisplayBounds(0, &disp);
+
+    SDL_SetWindowPosition(windows[0].GetWindow(), 0, 0);
+    SDL_SetWindowPosition(windows[1].GetWindow(), disp.w - 522, 0);
+    SDL_SetWindowPosition(windows[2].GetWindow(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+
     Keyboard cdr, plt;
     cdr.Init(0);
     plt.Init(1);
 
+    SDL_SetWindowPosition(cdr.GetWindow(), (522 / 2) - 120, 512);
+    SDL_SetWindowPosition(plt.GetWindow(), (((disp.w - 522) + disp.w) / 2) - 120, 512);
+
     CenterConsole console;
     console.Init();
+
+    SDL_SetWindowPosition(console.GetWindow(), SDL_WINDOWPOS_CENTERED, (disp.h / 2) + 256);
 
     DPS dps;
     dps.Init();

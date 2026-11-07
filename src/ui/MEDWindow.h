@@ -14,6 +14,7 @@ class MEDWindow
 {
 public:
     void Init(IDP* idp, int w = 512, int h = 512);
+    SDL_Window* GetWindow() { return window; }
 
     void Clear();
     void Tick();

@@ -10,6 +10,8 @@ public:
 
     void Draw();
     void MouseEvent(SDL_Event& e);
+
+    SDL_Window* GetWindow() { return window; }
 private:
     void AddSwitch(int x, int y, Switch::OnClicked_t handler, int rot = 0, int defState = SWITCH_OFF);
 private:

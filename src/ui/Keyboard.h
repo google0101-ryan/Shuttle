@@ -43,6 +43,7 @@ class Keyboard
 {
 public:
     void Init(int id);
+    SDL_Window* GetWindow() { return window; }
 
     void Draw();
     void MouseEvent(SDL_Event& e);
