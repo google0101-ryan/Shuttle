@@ -17,7 +17,7 @@ set(SOURCES src/ui/MEDWindow.cpp
             src/dps/GPC.cpp
             src/dps/IDP.cpp
             src/dps/MemoryConfig.cpp
-            "src/dps/Timer.cpp"
+            src/dps/Timer.cpp
             src/dps/SW/SWUtil.cpp
             src/dps/SW/GpcMemory.cpp
             src/dps/SW/BfsMemory.cpp
@@ -35,14 +35,15 @@ set(INCLUDES
                 src/dps/GPC.h
                 src/dps/IDP.h
                 src/dps/MemoryConfig.h
-                "src/dps/Timer.h"
+                src/dps/Timer.h
                 src/dps/SW/GpcMemory.h
                 src/dps/SW/BfsMemory.h
                 src/dps/SW/GNC/MM101.h
                 src/dps/SW/GNC/BFS_MM101.h
                 src/dps/SW/Page.h
                 src/dps/SW/SWUtil.h
-                src/util/Parser.h)
+                src/util/Parser.h
+                src/dps/SW/GNC/GNCSpec18.h)
 
 find_package(SDL2 CONFIG REQUIRED)
 find_package(SDL2_ttf CONFIG REQUIRED)

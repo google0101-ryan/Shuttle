@@ -31,12 +31,30 @@ void DPS::Init()
     bfsEnabled = false;
     kb1 = false;
     kb2 = false;
+    isInLiftoff = false;
 }
 
 void DPS::Tick()
 {
     for (int i = 0; i < 4; i++)
         idp[i].Tick();
+
+    if (!isInLiftoff && gpcs[0].GetTime()->GetTimeS() > 60)
+    {
+        Liftoff();
+    }
+    else if (isInLiftoff)
+    {
+        switch ((int)gpcs[0].GetTime()->GetTimeS())
+        {
+        case 115:
+            pool.Write<bool>(PC_LT_50, true);
+            break;
+        case 120:
+            pool.Write<bool>(PC_LT_50, false);
+            break;
+        }
+    }
 }
 
 void DPS::Liftoff()
@@ -134,8 +152,10 @@ void DPS::UpdateIDPs(GPC* caller)
         idp[2].SetGPC(mc.nbat.crt[2] != 0 ? &gpcs[mc.nbat.crt[2]-1] : nullptr);
     idp[3].SetGPC(mc.nbat.crt[3] != 0 ? &gpcs[mc.nbat.crt[3]-1] : nullptr);
     // Broadcast changes to all other GPCs
-    for (int i = 1; i < 5; i++)
+    for (int i = 0; i < 5; i++)
     {
+        if (i == caller->GetID())
+            continue;
         gpcs[i].UpdateMC(caller->GetMC());
     }
 }
