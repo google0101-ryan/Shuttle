@@ -4,7 +4,7 @@
 #include <dps/SW/BfsMemory.h>
 #include <dps/SW/GNC/MM101.h>
 #include <dps/SW/GNC/BFS_MM101.h>
-#include <dps/Time.h>
+#include <dps/Timer.h>
 
 class IDP;
 
@@ -18,6 +18,7 @@ public:
 
     void Liftoff();
 
+    void PreOpsCommand();
     bool OpsCommand(int mm);
     bool GoToSpec(int spec);
 

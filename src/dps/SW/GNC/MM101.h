@@ -14,5 +14,5 @@ public:
     virtual const char* GetTitle();
     virtual bool CanTransition(int newMM);
 private:
-    bool hasLaunched;
+    bool hasLaunched = false;
 };

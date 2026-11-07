@@ -22,6 +22,8 @@ public:
     using OnClicked_t = std::function<void(int, SDL_Event&, void*)>;
 public:
     void Init(SDL_Renderer* parent, int x, int y, SwitchType type = TWO_WAY);
+    void Rotate(int r);
+    void SetState(int state) { this->state = state; }
 
     void Draw(SDL_Renderer* parent);
 
@@ -34,4 +36,5 @@ private:
     OnClicked_t handler;
     int x, y, w, h;
     SwitchType type;
+    int rot = 0;
 };

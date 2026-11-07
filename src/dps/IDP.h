@@ -19,6 +19,8 @@ public:
     void Init(int id);
     void Tick();
     void Draw(MEDWindow* surf);
+    void DrawKB1Ind(MEDWindow* surf);
+    void DrawKB2Ind(MEDWindow* surf);
 
     void SetGPC(GPC* gpc);
     GPC* GetGPC();
@@ -29,6 +31,7 @@ private:
     void ParseItemCommand();
     void ParseOpsCommand();
     void ParseSpecCommand();
+    void ParseGpcCrtCommand();
 
     int GetFlashingEntry();
 private:

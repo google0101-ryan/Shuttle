@@ -5,7 +5,7 @@
 
 #define NUM_CRTS 3
 
-int main()
+int main(int argc, char** argv)
 {
     MEDWindow  windows[NUM_CRTS];
     for (int i = 0; i < NUM_CRTS; i++)
@@ -32,8 +32,6 @@ int main()
 
         for (int i = 0; i < NUM_CRTS; i++)
         {
-            windows[i].Clear();
-
             dps.Draw(i, &windows[i]);
         }
 

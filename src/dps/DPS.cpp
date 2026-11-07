@@ -27,6 +27,10 @@ void DPS::Init()
 
     for (int i = 0; i < 4; i++)
         blankFrames[i] = 0;
+
+    bfsEnabled = false;
+    kb1 = false;
+    kb2 = false;
 }
 
 void DPS::Tick()
@@ -62,6 +66,24 @@ void DPS::Draw(int idx, MEDWindow *surf)
     }
 
     idp[idx].Draw(surf);
+
+    if (idx == 0)
+    {
+        if (!kb1)
+            idp[idx].DrawKB1Ind(surf);
+    }
+    else if (idx == 1)
+    {
+        if (!kb2)
+            idp[idx].DrawKB2Ind(surf);
+    }
+    else if (idx == 2)
+    {
+        if (kb1)
+            idp[idx].DrawKB1Ind(surf);
+        if (kb2)
+            idp[idx].DrawKB2Ind(surf);
+    }
 }
 
 void DPS::Blank(int frames)
@@ -82,10 +104,16 @@ void DPS::SendKey(int kbIdx, int key)
     switch (kbIdx)
     {
     case 0:
-        idp[0].SendKey(key);
+        if (kb1)
+            idp[2].SendKey(key);
+        else
+            idp[0].SendKey(key);
         break;
     case 1:
-        idp[2].SendKey(key);
+        if (kb2)
+            idp[2].SendKey(key);
+        else
+            idp[1].SendKey(key);
         break;
     case 2:
         idp[3].SendKey(key);
@@ -93,10 +121,10 @@ void DPS::SendKey(int kbIdx, int key)
     }
 }
 
-void DPS::UpdateIDPs()
+void DPS::UpdateIDPs(GPC* caller)
 {
     // TODO: redundant set evaluation
-    auto mc = gpcs[0].GetMC();
+    auto mc = caller->GetMC();
 
     // Remap CRTs
     idp[0].SetGPC(mc.nbat.crt[0] != 0 ? &gpcs[mc.nbat.crt[0]-1] : nullptr);
@@ -108,7 +136,7 @@ void DPS::UpdateIDPs()
     // Broadcast changes to all other GPCs
     for (int i = 1; i < 5; i++)
     {
-        gpcs[i].UpdateMC(gpcs[0].GetMC());
+        gpcs[i].UpdateMC(caller->GetMC());
     }
 }
 
@@ -125,6 +153,16 @@ void DPS::SetBFSEnable(bool bfs)
         idp[2].SetGPC(&gpcs[4]);
     else
         idp[2].SetGPC(mc.nbat.crt[2] != 0 ? &gpcs[mc.nbat.crt[2]-1] : nullptr);
+}
+
+void DPS::SetKB1(bool crt3)
+{
+    kb1 = crt3;
+}
+
+void DPS::SetKB2(bool crt3)
+{
+    kb2 = crt3;
 }
 
 DPS *DPS::Instance()

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SDL2/SDL.h>
-#include <SDL_FontCache/SDL_FontCache.h>
+#include <SDL_FontCache.h>
 
 class IDP;
 
@@ -29,6 +29,7 @@ public:
     void DrawTextUnderline(double x, double y, const char* text, ...);
     void DrawLine(double x1, double y1, double x2, double y2);
     void DrawBox(double x1, double y1, double x2, double y2);
+    void DrawRectangle(double x1, double y1, double x2, double y2);
 
     void PlaySound(int duration, const char* fileName);
 private:

@@ -88,6 +88,10 @@ void Keyboard::Init(int id)
     resume->Init(renderer, 0, 420, "res/resume.png");
     resume->SetOnClicked(SendKey<KEY_RESUME>);
 
+    gpccrt = new Button();
+    gpccrt->Init(renderer, 0, 60, "res/gpccrt.png");
+    gpccrt->SetOnClicked(SendKey<KEY_GPC_CRT>);
+
     inputIdx = 0;
 }
 
@@ -109,6 +113,7 @@ void Keyboard::Draw()
     pro->Draw(renderer);
     spec->Draw(renderer);
     resume->Draw(renderer);
+    gpccrt->Draw(renderer);
 
     SDL_RenderPresent(renderer);
 }
@@ -132,6 +137,7 @@ void Keyboard::MouseEvent(SDL_Event &e)
     pro->OnMouseDown(e, (void*)this);
     spec->OnMouseDown(e, (void*)this);
     resume->OnMouseDown(e, (void*)this);
+    gpccrt->OnMouseDown(e, (void*)this);
 }
 
 void Keyboard::AddInput(int button)

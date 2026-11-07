@@ -1,4 +1,5 @@
 #include <ui/MEDWindow.h>
+#include <algorithm>
 
 static bool sdlInitialized = false;
 
@@ -199,6 +200,17 @@ void MEDWindow::DrawBox(double x1, double y1, double x2, double y2)
     rect.h = (y1 > y2) ? y1-y2 : y2-y1;
 
     SDL_RenderDrawRect(renderer, &rect);
+}
+
+void MEDWindow::DrawRectangle(double x1, double y1, double x2, double y2)
+{
+    SDL_Rect rect;
+    rect.x = std::min(x1, x2);
+    rect.y = std::min(y1, y2);
+    rect.w = (x1 > x2) ? x1 - x2 : x2 - x1;
+    rect.h = (y1 > y2) ? y1 - y2 : y2 - y1;
+
+    SDL_RenderFillRect(renderer, &rect);
 }
 
 void MEDWindow::PlaySound(int duration, const char *fileName)

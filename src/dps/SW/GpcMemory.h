@@ -11,6 +11,7 @@ public:
 
     MemoryConfig& GetMC() { return editing; }
 
+    virtual void Tick();
     virtual void Draw(MEDWindow* surf);
     virtual int GetNum() { return 0; }
     virtual const char* GetTitle() { return "GPC MEMORY"; }
@@ -25,4 +26,6 @@ private:
     int mcToBeStored;
     int storedMC;
     int targetStoreGPC;
+    bool storingMC;
+    double storeTime;
 };

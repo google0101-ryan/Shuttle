@@ -21,6 +21,13 @@ void Switch::Init(SDL_Renderer *parent, int x, int y, SwitchType type)
 
     w = onStateSurf->w;
     h = onStateSurf->h;
+
+    state = SWITCH_OFF;
+}
+
+void Switch::Rotate(int r)
+{
+    rot = r;
 }
 
 void Switch::Draw(SDL_Renderer *parent)
@@ -45,7 +52,7 @@ void Switch::Draw(SDL_Renderer *parent)
     dst.w = w;
     dst.h = h;
 
-    SDL_RenderCopy(parent, targ, NULL, &dst);
+    SDL_RenderCopyEx(parent, targ, NULL, &dst, rot, NULL, SDL_FLIP_NONE);
 }
 
 void Switch::OnMouseDown(SDL_Event &e, void* ctxt)

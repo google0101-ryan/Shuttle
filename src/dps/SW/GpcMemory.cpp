@@ -15,6 +15,22 @@ GpcMemory::GpcMemory()
     mcToBeStored = -1;
     storedMC = -1;
     targetStoreGPC = -1;
+    targMask = mc1.targetMask;
+
+    storingMC = false;
+}
+
+void GpcMemory::Tick()
+{
+    if (storingMC)
+    {
+        double dt = parent->GetInternalTime()->GetTimeMS() - storeTime;
+        if (dt < 15 * 1000.0)
+            return;
+
+        storedMC = mcToBeStored;
+        storingMC = false;
+    }
 }
 
 void GpcMemory::Draw(MEDWindow *surf)
@@ -159,20 +175,58 @@ bool GpcMemory::ExecuteItem(ItemCommand &cmd)
     {
     case 1:
         return SwitchMC(cmd.val);
-    case 7 ... 10:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    {
+        int gpc = cmd.item - 1;
+        printf("%d (%x, %x)", cmd.item - 1, (1 << (gpc - 1)), ~(1 << (gpc - 1)));
+        if (cmd.val == gpc)
+            editing.targetMask |= (1 << (gpc - 1));
+        else if (cmd.val == 0)
+            editing.targetMask &= ~(1 << (gpc - 1));
+        else
+            return false;
+        return true;
+    }
+    case 7:
+    case 8:
+    case 9:
+    case 10:
         editing.nbat.string[cmd.item - 7] = cmd.val;
         return true;
     case 11:
         editing.nbat.pl = cmd.val;
         return true;
-    case 12 ... 15:
+    case 12:
+    case 13:
+    case 14:
+    case 15:
         editing.nbat.crt[cmd.item - 12] = cmd.val;
         return true;
-    case 16 ... 17:
+    case 16:
+    case 17:
         editing.nbat.launch[cmd.item - 16] = cmd.val;
         return true;
-    case 18 ... 19:
+    case 18:
+    case 19:
         editing.nbat.mm[cmd.item - 18] = cmd.val;
+        return true;
+    case 45:
+        if (cmd.val < 1 || cmd.val > 4)
+            return false;
+        mcToBeStored = cmd.val;
+        return true;
+    case 46:
+        if (cmd.val != parent->GetID())
+            return false;
+        targetStoreGPC = cmd.val;
+        return true;
+    case 47:
+        storingMC = true;
+        storeTime = parent->GetInternalTime()->GetTimeMS();
         return true;
     }
 

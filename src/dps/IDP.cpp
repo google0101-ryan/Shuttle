@@ -23,7 +23,16 @@ const char* ScratchpadString(int* buf, int len)
         case KEY_ITEM:
             strcat(dst, "ITEM ");
             break;
-        case KEY_0 ... KEY_9:
+        case KEY_0:
+        case KEY_1:
+        case KEY_2:
+        case KEY_3:
+        case KEY_4:
+        case KEY_5:
+        case KEY_6:
+        case KEY_7:
+        case KEY_8:
+        case KEY_9:
             strcat(dst, std::to_string(buf[i]).c_str());
             break;
         case KEY_MINUS:
@@ -46,6 +55,9 @@ const char* ScratchpadString(int* buf, int len)
             break;
         case KEY_RESUME:
             strcat(dst, "RESUME ");
+            break;
+        case KEY_GPC_CRT:
+            strcat(dst, "GPC/CRT ");
             break;
         }
     }
@@ -107,6 +119,8 @@ void DrawScratchpad(char* dst, int* buf, int len)
         
         dst[j++] = str[i];
     }
+
+    dst[j] = 0;
 }
 
 void IDP::Init(int id)
@@ -140,6 +154,9 @@ void IDP::Tick()
         processed = true;
         gpc->GoToSpec(-1);
         break;
+    case KEY_GPC_CRT:
+        ParseGpcCrtCommand();
+        break;
     default:
         inputError = true;
         processed = true;
@@ -157,46 +174,70 @@ void DrawButton(int x, MEDWindow* surf)
 void IDP::Draw(MEDWindow *surf)
 {
     surf->DPSFont();
-    gpc->GetCurPage()->Draw(surf);
-
-    // IDP 
-    surf->SetDrawColor(COLOR_DPS_NORMAL);
-    surf->DPSFont();
-    surf->DrawTextRaw(247, 423, "%d", id);
-    // box around identifier
-    surf->DrawBox(231, 415, 271, 453);
-
-    // Draw scratchpad
-    char buf[1024] = {0};
-    DrawScratchpad(buf, inputLine, inputLineLen);
-
-    int flashingEntry = GetFlashingEntry();
-    if (flashingEntry != 0)
+    if (gpc)
     {
-        char str2[16];
-        strncpy(str2, buf, flashingEntry);
-        surf->DrawTextFlash(1, 26, str2);
-    }
+        surf->Clear();
+        gpc->GetCurPage()->Draw(surf);
 
-    surf->DrawText(1 + flashingEntry, 26, buf + flashingEntry);
+        // IDP 
+        surf->SetDrawColor(COLOR_DPS_NORMAL);
+        surf->DPSFont();
+        surf->DrawTextRaw(247, 423, "%d", id);
+        // box around identifier
+        surf->DrawBox(231, 415, 271, 453);
 
-    // Draw error messages
-    if (inputError)
-    {
-        surf->ErrorFont();
-        surf->DrawTextFlash(1, 25, "ILLEGAL ENTRY");
+        // Draw scratchpad
+        char buf[1024] = { 0 };
+        DrawScratchpad(buf, inputLine, inputLineLen);
+
+        int flashingEntry = GetFlashingEntry();
+        if (flashingEntry != 0)
+        {
+            char str2[16] = { 0 };
+            strncpy(str2, buf, flashingEntry);
+            surf->DrawTextFlash(1, 26, str2);
+        }
+
+        surf->DrawText(1 + flashingEntry, 26, buf + flashingEntry);
+
+        // Draw error messages
+        if (inputError)
+        {
+            surf->ErrorFont();
+            surf->DrawTextFlash(1, 25, "ILLEGAL ENTRY");
+        }
+        else if (errorMsgQ.size() > 0 && errorMsgQ.front().size() != 0)
+        {
+            surf->ErrorFont();
+            surf->DrawTextFlash(1, 25, errorMsgQ.front().c_str());
+        }
     }
-    else if (errorMsgQ.size() > 0 && errorMsgQ.front().size() != 0)
+    else
     {
-        surf->ErrorFont();
-        surf->DrawTextFlash(1, 25, errorMsgQ.front().c_str());
+        // Draw large red x
+        surf->SetDrawColor(COLOR_ERROR_NORMAL, 255);
+        surf->DrawLine(0, 0, 512, 364);
+        surf->DrawLine(512, 0, 0, 364);
     }
+}
+
+void IDP::DrawKB1Ind(MEDWindow* surf)
+{
+    surf->SetDrawColor(COLOR_ERROR_NORMAL, 255);
+    surf->DrawRectangle(110, 431, 231, 436);
+}
+
+void IDP::DrawKB2Ind(MEDWindow* surf)
+{
+    surf->SetDrawColor(COLOR_DPS_YELLOW, 255);
+    surf->DrawRectangle(272, 431, 402, 436);
 }
 
 void IDP::SetGPC(GPC *gpc)
 {
     this->gpc = gpc;
-    gpc->SetParent(this);
+    if (gpc)
+        gpc->SetParent(this);
 }
 
 GPC *IDP::GetGPC()
@@ -206,6 +247,9 @@ GPC *IDP::GetGPC()
 
 void IDP::SendKey(int key)
 {
+    if (!gpc)
+        return; // Don't do keyboard processing if there's no assigned GPC
+
     if (inputLineLen >= 100)
     {
         inputError = true;
@@ -355,7 +399,9 @@ void IDP::ParseOpsCommand()
         return;
     }
 
-    auto mc = DPS::Instance()->GetGPC(0)->GetMC();
+    gpc->PreOpsCommand();
+
+    auto mc = gpc->GetMC();
     for (int i = 0; i < 5; i++)
     {
         if (mc.targetMask & (1<<i))
@@ -407,6 +453,39 @@ void IDP::ParseSpecCommand()
 
     if (!gpc->GoToSpec(spec))
         inputError = true;
+}
+
+void IDP::ParseGpcCrtCommand()
+{
+    processed = true;
+
+    if (!IsDigit(inputLine[1]) || !IsDigit(inputLine[2]) || inputLine[3] != KEY_EXEC)
+    {
+        inputError = true;
+        return;
+    }
+
+    if (inputLine[1] < 0 || inputLine[1] > 5)
+    {
+        inputError = true;
+        return;
+    }
+
+    GPC* gpc;
+    if (inputLine[1] != 0)
+        gpc = DPS::Instance()->GetGPC(inputLine[1] - 1);
+    else
+        gpc = nullptr;
+
+    if (inputLine[2] < 1 || inputLine[2] > 4)
+    {
+        inputError = true;
+        return;
+    }
+
+    IDP* idp = DPS::Instance()->GetIDP(inputLine[2] - 1);
+
+    idp->SetGPC(gpc);
 }
 
 int IDP::GetFlashingEntry()

@@ -63,6 +63,7 @@ private:
     Button* pro;
     Button* spec;
     Button* resume;
+    Button* gpccrt;
 
     int inputBuf[1024];
     int inputIdx;

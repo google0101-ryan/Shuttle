@@ -4,6 +4,10 @@ project(shuttle)
 
 add_subdirectory(SDL_FontCache)
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 set(SOURCES src/ui/MEDWindow.cpp
             src/ui/Keyboard.cpp
             src/ui/Button.cpp
@@ -13,7 +17,7 @@ set(SOURCES src/ui/MEDWindow.cpp
             src/dps/GPC.cpp
             src/dps/IDP.cpp
             src/dps/MemoryConfig.cpp
-            src/dps/Time.cpp
+            "src/dps/Timer.cpp"
             src/dps/SW/SWUtil.cpp
             src/dps/SW/GpcMemory.cpp
             src/dps/SW/BfsMemory.cpp
@@ -31,7 +35,7 @@ set(INCLUDES
                 src/dps/GPC.h
                 src/dps/IDP.h
                 src/dps/MemoryConfig.h
-                src/dps/Time.h
+                "src/dps/Timer.h"
                 src/dps/SW/GpcMemory.h
                 src/dps/SW/BfsMemory.h
                 src/dps/SW/GNC/MM101.h
@@ -48,9 +52,9 @@ add_executable(shuttle ${SOURCES} ${INCLUDES})
 include_directories(
     ${CMAKE_SOURCE_DIR}/src/dps
     ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/SDL_FontCache
 )
-target_link_libraries(shuttle PRIVATE SDL2::SDL2 SDL2_ttf::SDL2_ttf FontCache SDL2_image::SDL2_image)
+target_link_libraries(shuttle PRIVATE SDL2::SDL2 SDL2_ttf::SDL2_ttf FontCache SDL2_image::SDL2_image SDL2::SDL2main)
 
 file(GLOB RESOURCES
     res/*)

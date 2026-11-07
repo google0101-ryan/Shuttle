@@ -46,14 +46,17 @@ void GPC::Liftoff()
     }
 }
 
-bool GPC::OpsCommand(int mm)
+void GPC::PreOpsCommand()
 {
     mc = ops0.GetMC();
     // Update global OPS
-    SetConfig(mc.num-1, mc);
+    SetConfig(mc.num - 1, mc);
     // Tell the DPS system that the NBAT has changed
-    DPS::Instance()->UpdateIDPs();
+    DPS::Instance()->UpdateIDPs(this);
+}
 
+bool GPC::OpsCommand(int mm)
+{
     DPS::Instance()->Blank(10);
 
     if (mm == curMM->GetNum())
@@ -74,7 +77,7 @@ bool GPC::OpsCommand(int mm)
 bool GPC::GoToSpec(int spec)
 {
     // This is for CRT blanking
-    auto mc = GetMC();
+    const auto& mc = GetMC();
     bool crts[4] = {false};
     for (int i = 0; i < 4; i++)
         if (mc.nbat.crt[i] == id)
@@ -89,7 +92,10 @@ bool GPC::GoToSpec(int spec)
     {
         if (curMM->GetNum() == 0)
             return false;
-        curSpec = &ops0;
+        if (isBFS)
+            curSpec = &bfsMem;
+        else
+            curSpec = &ops0;
     }
 
     switch (spec)

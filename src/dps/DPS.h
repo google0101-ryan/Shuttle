@@ -24,8 +24,10 @@ public:
     // 0 - Left keyboard, 1 - right keyboard, 2 - rear keyboard
     void SendKey(int kbIdx, int key);
 
-    void UpdateIDPs();
+    void UpdateIDPs(GPC* caller);
     void SetBFSEnable(bool bfs);
+    void SetKB1(bool crt3);
+    void SetKB2(bool crt3);
 
     GPC* GetGPC(int i) { return &gpcs[i]; }
     IDP* GetIDP(int i) { return &idp[i]; }
@@ -41,6 +43,8 @@ private:
     bool isInLiftoff;
     // Whenever we transition to a new major mode, simulate loading time by blanking for a few frames
     int blankFrames[4];
+
+    bool kb1, kb2;
 
     static DPS* instance;
 };
