@@ -520,7 +520,7 @@ void IDP::AddError(GPC *gpc, const char *msg, const char *msg2)
     int padLeftMsg2 = padMsg2 / 2;
     int padRightMsg2 = padMsg2 - padLeftMsg2;
     
-    int len = sprintf(errorMsg, "    %*s%s%*s %*s%s%*s        %d        %s", padLeftMsg, "", msg, padRightMsg, "", padLeftMsg2, "", msg2, padRightMsg2, "", gpc->GetID(), gpc->GetTime()->GetTimeString().c_str() + 4);
+    int len = sprintf(errorMsg, "    %*s%s%*s %*s%s%*s        %d        %s", padLeftMsg, "", msg, padRightMsg, "", padLeftMsg2, "", msg2, padRightMsg2, "", gpc->GetID(), gpc->GetTime()->GetTimeString() + 4);
     if (errorMsgQ.size() != 0)
         sprintf(errorMsg+len, "(%02d)", errorMsgQ.size());
 

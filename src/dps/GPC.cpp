@@ -25,6 +25,14 @@ void GPC::Init(int id)
     time.Init();
     internalTime.Init();
     internalTime.Unpause();
+
+    // Current day of year, this translates to day 136
+    uint64_t dayInMS = 11750400000;
+    uint64_t hourInMS = 43200000;
+    uint64_t minuteInMS = 2820000;
+    uint64_t secondInMS = 280000;
+
+    gmtBaseMS = dayInMS + hourInMS + minuteInMS + secondInMS;
 }
 
 void GPC::Tick()

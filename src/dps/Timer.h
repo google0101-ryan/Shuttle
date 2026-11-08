@@ -9,7 +9,7 @@ public:
     void Init(bool up = true);
     void Unpause();
 
-    std::string GetTimeString();
+    const char* GetTimeString(uint64_t base = 0);
     double GetTimeMS();
     double GetTimeS() { return GetTimeMS() / 1000; }
 private:

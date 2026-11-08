@@ -21,32 +21,28 @@ void Time::Unpause()
     paused = false;
 }
 
-std::string Time::GetTimeString()
+const char* Time::GetTimeString(uint64_t baseMS)
 {
-    std::stringstream ss;
+    using namespace std::chrono;
+    static char buf[1024];
 
     tp_t curEnd = paused ? pauseTime : clock_t::now();
     duration_t elapsed = (curEnd - base) - pausedSeconds;
 
     auto elapsedMS = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed);
-    double t = elapsedMS.count();
+    elapsedMS += milliseconds(baseMS);
 
-    int day = t / 86400000;
-    t -= (day * 86400000);
+    auto secs = duration_cast<seconds>(elapsedMS);
+    elapsedMS -= duration_cast<milliseconds>(secs);
+    auto mins = duration_cast<minutes>(secs);
+    secs -= duration_cast<seconds>(mins);
+    auto hour = duration_cast<hours>(mins);
+    mins -= duration_cast<minutes>(hour);
+    auto day = duration_cast<days>(hour);
+    hour -= duration_cast<hours>(day);
     
-    int hour = t / 3600000;
-    t -= (hour * 3600000);
-
-    int minute = t / 60000;
-    t -= (minute * 60000);
-
-    double second = t / 1000;
-    
-    ss << std::setfill('0') << std::setw(3) << day
-        << "/" << std::setw(2) << hour << ":" << std::setw(2) << minute <<
-        ":" << std::setw(2) << (int)second;
-
-    return ss.str();
+    sprintf(buf, "%03ld/%02ld:%02ld:%02ld", day.count(), hour.count(), mins.count(), secs.count());
+    return buf;
 }
 
 double Time::GetTimeMS()

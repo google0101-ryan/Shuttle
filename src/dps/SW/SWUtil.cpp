@@ -14,7 +14,7 @@ void SWUtil::DrawCommonHeader(GPC *gpc, MEDWindow *window)
         sprintf(dispBuf, "%03d", gpc->GetDisp()->GetNum());
     }
 
-    window->DrawText(1, 0, " %03d1/%03s/%03s    %-16s   %1d %s", gpc->GetMM()->GetNum(), specBuf, dispBuf, gpc->GetCurPage()->GetTitle(), gpc->GetID(), gpc->GetTime()->GetTimeString().c_str());
+    window->DrawText(1, 0, " %03d1/%03s/%03s    %-16s   %1d %s", gpc->GetMM()->GetNum(), specBuf, dispBuf, gpc->GetCurPage()->GetTitle(), gpc->GetID(), gpc->GetTime()->GetTimeString());
     window->DrawText(39, 1, "000/00:00:00");
     if (gpc->IsBFS())
     {

@@ -8,6 +8,8 @@
 #include <dps/SW/GNC/BFSSpec18.h>
 #include <dps/Timer.h>
 
+#include <stdint.h>
+
 class IDP;
 
 class GPC
@@ -39,6 +41,8 @@ public:
     void UpdateMC(MemoryConfig& mc) { this->mc = mc; ops0.GetMC() = mc; }
 
     bool IsBFS() { return isBFS; }
+
+    uint64_t GetGMTBase() { return gmtBaseMS; }
 private:
     bool SwitchBFSMM(int mm);
     bool SwitchPASSMM(int mm);
@@ -66,4 +70,5 @@ private:
     int id;
     MemoryConfig mc;
     bool isBFS;
+    uint64_t gmtBaseMS;
 };
