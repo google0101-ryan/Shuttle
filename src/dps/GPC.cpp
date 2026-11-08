@@ -108,7 +108,7 @@ bool GPC::GoToSpec(int spec)
     case 0:
         break;
     case 18:
-        curDisp = &gncSysSumm1;
+        curDisp = isBFS ? (Page*)&bfsSysSumm1 : (Page*)&gncSysSumm1;
         break;
     default:
         return false;

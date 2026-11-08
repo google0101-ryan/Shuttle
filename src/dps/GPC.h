@@ -5,6 +5,7 @@
 #include <dps/SW/GNC/MM101.h>
 #include <dps/SW/GNC/BFS_MM101.h>
 #include <dps/SW/GNC/GNCSpec18.h>
+#include <dps/SW/GNC/BFSSpec18.h>
 #include <dps/Timer.h>
 
 class IDP;
@@ -52,6 +53,9 @@ private:
 
     // Spec pages, GNC, PASS
     GNCSysSumm1 gncSysSumm1;
+
+    // Spec pages, BFS
+    BFSSysSumm1 bfsSysSumm1;
 
     BFSMemory bfsMem;
     BFS_LaunchTrajectory bfsMM101;

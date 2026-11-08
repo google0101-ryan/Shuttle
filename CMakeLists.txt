@@ -23,7 +23,8 @@ set(SOURCES src/ui/MEDWindow.cpp
             src/dps/SW/BfsMemory.cpp
             src/dps/SW/GNC/MM101.cpp
             src/dps/SW/GNC/BFS_MM101.cpp
-            src/main.cpp "src/dps/SW/GNC/GNCSpec18.cpp")
+            src/main.cpp
+            src/dps/SW/GNC/GNCSpec18.cpp "src/dps/SW/GNC/BFSSpec18.cpp")
 
 set(INCLUDES
                 src/ui/MEDWindow.h
@@ -43,7 +44,8 @@ set(INCLUDES
                 src/dps/SW/Page.h
                 src/dps/SW/SWUtil.h
                 src/util/Parser.h
-                src/dps/SW/GNC/GNCSpec18.h)
+                src/dps/SW/GNC/GNCSpec18.h
+                src/dps/SW/GNC/BFSSpec18.h)
 
 find_package(SDL2 CONFIG REQUIRED)
 find_package(SDL2_ttf CONFIG REQUIRED)

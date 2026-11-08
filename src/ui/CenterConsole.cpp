@@ -29,7 +29,7 @@ void CenterConsole::Init()
 
     AddSwitch(270, 180, SwitchLeftKB, 270, SWITCH_ON);
     AddSwitch(480, 180, SwitchRightKB, 270);
-    AddSwitch(180, 315, OnBFSEnable);
+    AddSwitch(180, 315, OnBFSEnable, 0, SWITCH_ON);
 }
 
 void CenterConsole::Draw()
