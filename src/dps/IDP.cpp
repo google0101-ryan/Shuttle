@@ -224,13 +224,13 @@ void IDP::Draw(MEDWindow *surf)
 void IDP::DrawKB1Ind(MEDWindow* surf)
 {
     surf->SetDrawColor(COLOR_ERROR_NORMAL, 255);
-    surf->DrawRectangle(110, 431, 231, 436);
+    surf->DrawRectangle(110, 438, 231, 443);
 }
 
 void IDP::DrawKB2Ind(MEDWindow* surf)
 {
     surf->SetDrawColor(COLOR_DPS_YELLOW, 255);
-    surf->DrawRectangle(272, 431, 402, 436);
+    surf->DrawRectangle(272, 438, 402, 443);
 }
 
 void IDP::SetGPC(GPC *gpc)

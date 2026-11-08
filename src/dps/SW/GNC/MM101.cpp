@@ -19,7 +19,7 @@ void AscentTrajectory::Draw(MEDWindow *surf)
 
     surf->DrawText(8, 6, "CONT ABORT");
     surf->DrawText(9, 7, "3EO BLUE");
-    surf->DrawText(2, 8, "2  ARM 2EO");
+    surf->DrawText(2, 8, "2  ARM 2EO BLUE");
     surf->DrawText(2, 9, "4  ABORT");
     surf->DrawText(2, 11, "5 ENA YAW STEER");
     surf->DrawText(2, 13, "6  SERC");

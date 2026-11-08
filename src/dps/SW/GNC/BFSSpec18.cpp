@@ -31,7 +31,7 @@ void BFSSysSumm1::Draw(MEDWindow* surf)
     surf->DrawText(31, 17, "ADTA");
 
     surf->DrawText(3, 14, "MPS         L     C     R");
-    surf->DrawLine(40, 212, 305, 212);
+    surf->DrawLine(30, 212, 305, 212);
     surf->DrawLine(305, 212, 305, 262);
     surf->DrawText(3, 15, "HE TK P   0000  0000  0000");
     surf->DrawText(3, 16, "  REG P A 0000  0000  0000");
